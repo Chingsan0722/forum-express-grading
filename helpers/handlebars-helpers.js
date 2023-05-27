@@ -6,5 +6,6 @@ module.exports = {
   relativeTimeFromNow: a => dayjs(a).fromNow(),
   ifCond: function (a, b, options) {
     return a === b ? options.fn(this) : options.inverse(this)
-  }
+  },
+  relativeTime: a => dayjs(a).format('YYYY-MM-DD')
 }

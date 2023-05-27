@@ -1,37 +1,129 @@
-<div class="container">
+<div class="container row">
   <h1>Profile</h1>
-  <div>
-    <label class="form-label">Name</label>
-    <p>{{user.name}}</p>
-    <label class="form-label">Email</label>
-    <p>{{user.email}}</p>
-    <label class="form-label">Image</label>
-    <div>
-      <img class="img-responsive center-block mb-5" src="{{user.image}}"
-        style="width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+  <div class="card col-6 text-center">
+    <div class="card-body">
+      <label class="form-label">Name</label>
+      <h3>{{user.name}}</h3>
+      <hr>
+      <label class="form-label">Email</label>
+      <h4>{{user.email}}</h4>
+      <hr>
+      <label class="form-label">Image</label>
+      <div>
+        {{#if user.image}}
+        <img class="img-responsive center-block mb-5" src="{{user.image}}"
+          style="width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+        {{else}}
+        <img class="img-responsive center-block mb-5" src="https://i.imgur.com/aA4buEz.jpeg"
+          style="width: 250px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+        {{/if}}
+      </div>
+      <button class="btn btn-link">
+        <a class="btn btn-primary" href="/users/{{user.id}}/edit">Edit Profile</a>
+      </button>
     </div>
-    <button class="btn btn-link">
-      <a class="btn btn-primary" href="/users/{{user.id}}/edit">Edit Profile</a>
-    </button>
   </div>
-  <div>
+  <div class="card col-6">
+    <div class="card-body">
+      <h2>Footprint</h2>
+      <hr>
+      <ul>
+        <li>
+          已評論的餐廳：{{user.Comments.length}}
+          {{!-- FavoritedRestaurants, LikedRestaurants, Followers, Followings --}}
+        </li>
+        <li>
+          已收藏的餐廳：{{user.FavoritedRestaurants.length}}
+        </li>
+        <li>
+          我喜歡的餐廳：{{user.LikedRestaurants.length}}
+        </li>
+        <li>
+          Followers : {{user.Followers.length}}
+        </li>
+        </li>
+        <li>
+          Following : {{user.Followings.length}}
+        </li>
+        <li>
+          加入時間： {{relativeTime user.createdAt}}
+        </li>
+      </ul>
+      {{#ifCond user.Followers.length 0}}
+      {{else}}
+      <div class="card">
+        <div class="card-header">
+          {{user.Followers.length}} Followers
+        </div>
+        <div class="card-body">
+          {{#each user.Followers}}
+          <a href="/restaurants/{{this.id}}">
+            {{#if this.image}}
+            <img src="{{this.image}}" alt="image" style="width:10%">
+            {{else}}
+            <img src="https://i.imgur.com/aA4buEz.jpeg" alt="image" style="width:10%">
+            {{/if}}
+          </a>
+          {{/each}}
+        </div>
+        {{/ifCond}}
+        {{#ifCond user.Followings.length 0}}
+        {{else}}
+        <div class="card">
+          <div class="card-header">
+            {{user.Followings.length}} Followings
+          </div>
+          <div class="card-body">
+            {{#each user.Followings}}
+            <a href="/restaurants/{{this.id}}">
+              {{#if this.image}}
+              <img src="{{this.image}}" alt="image" style="width:10%">
+              {{else}}
+              <img src="https://i.imgur.com/aA4buEz.jpeg" alt="image" style="width:10%">
+              {{/if}}
+            </a>
+            {{/each}}
+          </div>
+          {{/ifCond}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
     <div class="card">
-      {{#ifCond comments.length 0}}
+      {{#ifCond user.Comments.length 0}}
       <div class="card-header">
         還沒評論過任何餐廳呢!
       </div>
       {{else}}
       <div class="card-header">
-        {{comments.length}}個評論過的餐廳
+        {{user.Comments.length}}個評論過的餐廳
       </div>
       <div class="card-body">
-        {{#each comments}}
+        {{#each user.Comments}}
         <a href="/restaurants/{{this.Restaurant.id}}">
-          <img src="{{this.Restaurant.image}}" alt="image" style="width:5%">
+          <img src="{{this.Restaurant.image}}" alt="image" style="width:7%">
         </a>
         {{/each}}
       </div>
       {{/ifCond}}
+      <div class="card">
+        {{#ifCond user.FavoritedRestaurants.length 0}}
+        <div class="card-header">
+          還沒收藏過任何餐廳呢!
+        </div>
+        {{else}}
+        <div class="card-header">
+          {{user.FavoritedRestaurants.length}}個收藏中的餐廳
+        </div>
+        <div class="card-body">
+          {{#each user.FavoritedRestaurants}}
+          <a href="/restaurants/{{this.id}}">
+            <img src="{{this.image}}" alt="image" style="width:7%">
+          </a>
+          {{/each}}
+        </div>
+        {{/ifCond}}
+      </div>
     </div>
   </div>
-</div>
